@@ -1,4 +1,4 @@
-## 如何上传github文件   <br>
+## git命令   <br>
 
 在命令行中进入本地文件夹  <br>
 `cd ./Desktop/github/LibrarySystem`<br>
@@ -11,6 +11,14 @@
 
 拉取项目代码
 `git clone https://github.com/56as/LibrarySystem.git`<br>
+
+回退到上一版本
+`git reset HEAD^`<br>
+回退到指定版本
+`git reset version_num`<br>
+查看版本号
+`git log --oneline`<br>
+
 
 ## github多人协作开发<br>
 ### 分支管理<br>
@@ -37,4 +45,5 @@
 ### 提交规范<br>
 参考 <https://www.ruanyifeng.com/blog/2016/01/commit_message_change_log.html><br>
 
-### 模块分工<br>
+### 模块分支<br>
+Browser,Server,Mysql三个模块<br>
