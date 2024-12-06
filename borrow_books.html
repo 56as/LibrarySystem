@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Borrow Books</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>借书</h1>
+        <nav>
+            <ul>
+                <li><a href="reader_homepage.html">返回首页</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>能借出的书！</h2>
+            <ul id="availableBooks">
+                <!-- 书籍列表在这里插入 -->
+            </ul>
+        </section>
+        <section>
+            <h2>借书</h2>
+            <form id="borrowForm">
+                <label for="bookId">选择一本书吧:</label>
+                <select id="bookId" required>
+                    <!-- 在这里的下拉列表选择书籍 -->
+                </select>
+                <button type="submit">确认借出</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Library Management System</p>
+    </footer>
+    <script src="scripts.js"></script>
+</body>
+</html>

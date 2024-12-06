@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Return Books</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>还书</h1>
+        <nav>
+            <ul>
+                <li><a href="reader_homepage.html">返回首页</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>待归还的书</h2>
+            <ul id="borrowedBooks">
+                <!-- 该用户已经借出来了的书在这里列出来 -->
+            </ul>
+        </section>
+        <section>
+            <h2>请在这里输入书名/书籍ID！</h2>
+            <form id="returnForm">
+                <label for="returnBookId">书籍ID:</label>
+                <input type="text" id="returnBookId" required>
+                <button type="submit">确认归还</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Library Management System</p>
+    </footer>
+    <script src="scripts.js"></script>
+</body>
+</html>

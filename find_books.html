@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Books</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>找书</h1>
+        <nav>
+            <ul>
+                <li><a href="reader_homepage.html">返回首页</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>搜索书籍</h2>
+            <form id="searchForm">
+                <input type="text" id="searchQuery" placeholder="输入标题、作者或ISBN号" required>
+                <button type="submit">点击搜索</button>
+            </form>
+            <div id="searchResults">
+                <!-- 搜索结果在这里显示出来 -->
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Library Management System</p>
+    </footer>
+    <script src="scripts.js"></script>
+</body>
+</html>

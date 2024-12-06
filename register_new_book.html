@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register New Book</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>登记新书</h1>
+        <nav>
+            <ul>
+                <li><a href="admin_homepage.html">回到首页</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>输入新书信息</h2>
+            <form id="registerBookForm">
+                <label for="title">标题:</label>
+                <input type="text" id="title" required><br>
+                <label for="author">作者:</label>
+                <input type="text" id="author" required><br>
+                <label for="isbn">ISBN:</label>
+                <input type="text" id="isbn" required><br>
+                <button type="submit">确认登记</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Library Management System</p>
+    </footer>
+    <script src="scripts.js"></script>
+</body>
+</html>

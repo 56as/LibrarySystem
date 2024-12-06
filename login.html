@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - Library Management System</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-image: url('images/image2.png'); /* 设置背景图片 */
+        background-size: cover; /* 使背景图片覆盖整个页面 */
+        background-position: center; /* 背景图片居中显示 */
+        background-repeat: no-repeat; /* 防止背景图片平铺 */
+        margin: 0; /* 移除默认的页面边距 */
+        height: 100vh; /* 使背景至少覆盖整个视口高度 */
+    }
+    .login-container {
+        width: 300px;
+        margin: 100px auto; /* 垂直和水平居中 */
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.8); /* 添加半透明背景，提高可读性 */
+    }
+    input[type="text"], input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+    }
+    button {
+        width: 100%;
+        padding: 10px;
+        background-color: #469358;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #00b348;
+    }
+</style>
+</head>
+<body>
+<div class="login-container">
+    <h2>在这里，开启你的阅读之旅</h2>
+    <form id="loginForm">
+        <input type="text" placeholder="Username" required>
+        <input type="password" placeholder="Password" required>
+        <button type="submit">点击进入图书管理系统！</button>
+    </form>
+</div>
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // 在这里加代码处理输入的账号密码！写个表单把账号密码传到后端去
+        alert('账号密码有误！');
+    });
+</script>
+</body>
+</html>
