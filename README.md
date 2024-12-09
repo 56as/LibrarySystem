@@ -11,6 +11,8 @@
 
 拉取项目代码
 `git clone https://github.com/56as/LibrarySystem.git`<br>
+拉取分支代码
+`git pull origin browser`<br>
 
 回退到上一版本
 `git reset HEAD^`<br>
