@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/main :: html}">
+<head>
+    <title id="pageTitle">编辑个人资料 - 图书管理系统</title>
+</head>
+<body>
+    <div th:fragment="mainContent">
+        <div class="container">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">编辑个人资料</h5>
+                    
+                    <form th:action="@{/profile/update}" method="post" class="needs-validation" novalidate>
+                        <input type="hidden" name="id" th:value="${reader.id}">
+                        
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label">用户名</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" th:value="${user.username}" readonly>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label">姓名</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="name" th:value="${reader.name}" required>
+                                <div class="invalid-feedback">请输入姓名</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label">电话</label>
+                            <div class="col-sm-10">
+                                <input type="tel" class="form-control" name="phone" th:value="${reader.phone}" required>
+                                <div class="invalid-feedback">请输入有效的电话号码</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label">邮箱</label>
+                            <div class="col-sm-10">
+                                <input type="email" class="form-control" name="email" th:value="${user.email}" required>
+                                <div class="invalid-feedback">请输入有效的邮箱地址</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label">地址</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" name="address" rows="3" th:text="${reader.address}"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 row">
+                            <div class="col-sm-10 offset-sm-2">
+                                <button type="submit" class="btn btn-primary me-2">保存更改</button>
+                                <a href="/profile/info" class="btn btn-secondary">返回</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 表单验证脚本 -->
+    <th:block id="pageScripts">
+        <script>
+            (function () {
+                'use strict'
+                var forms = document.querySelectorAll('.needs-validation')
+                Array.prototype.slice.call(forms)
+                    .forEach(function (form) {
+                        form.addEventListener('submit', function (event) {
+                            if (!form.checkValidity()) {
+                                event.preventDefault()
+                                event.stopPropagation()
+                            }
+                            form.classList.add('was-validated')
+                        }, false)
+                    })
+            })()
+        </script>
+    </th:block>
+</body>
+</html> 

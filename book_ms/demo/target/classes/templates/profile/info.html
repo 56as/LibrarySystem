@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/main :: html}">
+<head>
+    <title id="pageTitle">个人信息 - 图书管理系统</title>
+    <style>
+        .profile-container {
+            background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+                        url('https://img.freepik.com/free-photo/books-arrangement-with-copy-space_23-2148898198.jpg?w=1380&t=st=1704821148~exp=1704821748~hmac=cc2d6f1e2b624c24b705de0c8d6e8789f43b0d1f5ad1c675f2c77c83c4a5d925');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .profile-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px 15px 0 0;
+            margin-bottom: 2rem;
+        }
+
+        .profile-header h2 {
+            margin: 0;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .info-row {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.3s ease;
+        }
+
+        .info-row:hover {
+            background-color: rgba(107, 115, 255, 0.05);
+        }
+
+        .info-label {
+            color: #666;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            color: #333;
+            font-size: 1rem;
+        }
+
+        .badge {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            border-radius: 25px;
+        }
+
+        .badge.bg-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+        }
+
+        .badge.bg-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #f86781 100%) !important;
+        }
+
+        .badge.bg-warning {
+            background: linear-gradient(135deg, #ffc107 0%, #ffdb4d 100%) !important;
+            color: #000;
+        }
+
+        .edit-button {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            padding: 0.5rem 1.5rem;
+            background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .edit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 13, 255, 0.2);
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .profile-container {
+                padding: 1rem;
+            }
+            
+            .edit-button {
+                position: relative;
+                top: 0;
+                right: 0;
+                margin-top: 1rem;
+                width: 100%;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div th:fragment="mainContent">
+        <div class="profile-container">
+            <div class="container">
+                <!-- 添加成功消息显示 -->
+                <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <span th:text="${success}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                
+                <div class="profile-card">
+                    <div class="profile-header position-relative">
+                        <h2>个人信息</h2>
+                        <a href="/profile/edit" class="edit-button">
+                            <i class="bi bi-pencil-square"></i> 编辑资料
+                        </a>
+                    </div>
+
+                    <div class="card-body px-4 pb-4">
+                        <div class="info-row">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <div class="info-label">用户名</div>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="info-value" th:text="${user.username}">username</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-row">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <div class="info-label">姓名</div>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="info-value" th:text="${reader.name}">姓名</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-row">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <div class="info-label">电话</div>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="info-value" th:text="${reader.phone}">电话</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-row">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <div class="info-label">邮箱</div>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="info-value" th:text="${user.email}">邮箱</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-row">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <div class="info-label">地址</div>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="info-value" th:text="${reader.address}">地址</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-row">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <div class="info-label">会员状态</div>
+                                </div>
+                                <div class="col-md-9">
+                                    <span th:class="${'badge ' + (reader.membershipStatus == 'ACTIVE' ? 'bg-success' : 
+                                                           reader.membershipStatus == 'EXPIRED' ? 'bg-danger' : 'bg-warning')}"
+                                          th:text="${reader.membershipStatus == 'ACTIVE' ? '有效' : 
+                                                   reader.membershipStatus == 'EXPIRED' ? '过期' : '暂停'}">状态</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-row">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <div class="info-label">注册时间</div>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="info-value" th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd')}">注册时间</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/main :: html}">
+<head>
+    <title id="pageTitle" th:text="${reader.id} ? '编辑读者' : '添加读者'">编辑读者</title>
+</head>
+<body>
+    <div id="mainContent">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mb-4" th:text="${reader.id} ? '编辑读者' : '添加读者'">编辑读者</h5>
+                
+                <form th:action="@{/readers}" method="post" th:object="${reader}">
+                    <input type="hidden" th:field="*{id}">
+                    
+                    <div class="mb-3 row">
+                        <label class="col-sm-2 col-form-label">姓名</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" th:field="*{name}" required>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-2 col-form-label">邮箱</label>
+                        <div class="col-sm-10">
+                            <input type="email" class="form-control" th:field="*{email}" required>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-2 col-form-label">电话</label>
+                        <div class="col-sm-10">
+                            <input type="tel" class="form-control" th:field="*{phone}" required>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-2 col-form-label">地址</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" th:field="*{address}" rows="3"></textarea>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-2 col-form-label">会员状态</label>
+                        <div class="col-sm-10">
+                            <select class="form-select" th:field="*{membershipStatus}" required>
+                                <option value="ACTIVE">有效</option>
+                                <option value="EXPIRED">过期</option>
+                                <option value="SUSPENDED">暂停</option>
+                            </select>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('membershipStatus')}" th:errors="*{membershipStatus}"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <div class="col-sm-10 offset-sm-2">
+                            <button type="submit" class="btn btn-primary me-2">保存</button>
+                            <a href="/readers" class="btn btn-secondary">返回</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/main :: html}">
+<head>
+    <title id="pageTitle" th:text="${book.id} ? '编辑图书' : '添加图书'">编辑图书</title>
+</head>
+<body>
+    <div th:fragment="mainContent">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mb-4" th:text="${book.id} ? '编辑图书' : '添加图书'">编辑图书</h5>
+                
+                <form th:action="@{/books}" method="post" th:object="${book}">
+                    <input type="hidden" th:field="*{id}">
+                    
+                    <div class="mb-3 row">
+                        <label class="col-sm-2 col-form-label">书名</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" th:field="*{title}" required>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-2 col-form-label">作者</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" th:field="*{author}" required>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-2 col-form-label">ISBN</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" th:field="*{isbn}" required>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-2 col-form-label">出版社</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" th:field="*{publisher}" required>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('publisher')}" th:errors="*{publisher}"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-2 col-form-label">库存数量</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" th:field="*{availableCopies}" required min="0">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('availableCopies')}" th:errors="*{availableCopies}"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-2 col-form-label">类别</label>
+                        <div class="col-sm-10">
+                            <select class="form-select" th:field="*{category}" required>
+                                <option value="">选择类别</option>
+                                <option th:each="cat : ${categories}" 
+                                        th:value="${cat}" 
+                                        th:text="${cat}">类别</option>
+                            </select>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-2 col-form-label">描述</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" th:field="*{description}" rows="3"></textarea>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <div class="col-sm-10 offset-sm-2">
+                            <button type="submit" class="btn btn-primary me-2">保存</button>
+                            <a href="/books" class="btn btn-secondary">返回</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

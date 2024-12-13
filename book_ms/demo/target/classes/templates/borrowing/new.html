@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/main :: html}">
+<head>
+    <title id="pageTitle">新增借阅</title>
+</head>
+<body>
+    <div th:fragment="mainContent">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mb-4">新增借阅</h5>
+                
+                <form th:action="@{/borrowings}" method="post">
+                    <div class="mb-3 row">
+                        <label class="col-sm-2 col-form-label">读者</label>
+                        <div class="col-sm-10">
+                            <select class="form-select" name="readerId" required>
+                                <option value="">选择读者</option>
+                                <option th:each="reader : ${readers}"
+                                        th:value="${reader.id}"
+                                        th:text="${reader.name + ' (' + reader.phone + ')'}">
+                                    读者名称
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label class="col-sm-2 col-form-label">图书</label>
+                        <div class="col-sm-10">
+                            <select class="form-select" name="bookId" required>
+                                <option value="">选择图书</option>
+                                <option th:each="book : ${books}"
+                                        th:value="${book.id}"
+                                        th:text="${book.title + ' (库存: ' + book.availableCopies + ')'}">
+                                    图书名称
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <div class="col-sm-10 offset-sm-2">
+                            <button type="submit" class="btn btn-primary me-2">保存</button>
+                            <a href="/borrowings" class="btn btn-secondary">返回</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

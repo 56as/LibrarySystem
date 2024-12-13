@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/main :: html}">
+<head>
+    <title id="pageTitle">借阅管理</title>
+</head>
+<body>
+    <div th:fragment="mainContent">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">借阅记录列表</h5>
+            </div>
+            <div class="card-body">
+                <div th:if="${borrowings.empty}" class="alert alert-info">
+                    暂无借阅记录
+                </div>
+                <div class="table-responsive">
+                    <table th:if="${!borrowings.empty}" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>读者</th>
+                                <th>图书</th>
+                                <th>借出日期</th>
+                                <th>应还日期</th>
+                                <th>实际归还日期</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="borrowing : ${borrowings}">
+                                <td th:text="${borrowing.id}">1</td>
+                                <td th:text="${borrowing.reader.name}">读者姓名</td>
+                                <td th:text="${borrowing.book.title}">图书名称</td>
+                                <td th:text="${#temporals.format(borrowing.borrowDate, 'yyyy-MM-dd')}">2024-01-01</td>
+                                <td th:text="${#temporals.format(borrowing.dueDate, 'yyyy-MM-dd')}">2024-02-01</td>
+                                <td th:text="${borrowing.returnDate != null ? #temporals.format(borrowing.returnDate, 'yyyy-MM-dd') : '-'}">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 分页 -->
+                <nav th:if="${totalPages > 1}" aria-label="Page navigation" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                            <a class="page-link" th:href="@{/borrowings(page=${currentPage - 1})}">上一页</a>
+                        </li>
+                        <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}"
+                            th:classappend="${i == currentPage} ? 'active'">
+                            <a class="page-link" th:href="@{/borrowings(page=${i})}" th:text="${i}">1</a>
+                        </li>
+                        <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                            <a class="page-link" th:href="@{/borrowings(page=${currentPage + 1})}">下一页</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
