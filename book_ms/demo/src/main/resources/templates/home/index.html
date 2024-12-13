@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout/main :: html}">
+<head>
+    <meta charset="UTF-8">
+    <title id="pageTitle">欢迎使用图书管理系统</title>
+</head>
+<body>
+    <div th:fragment="mainContent">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <!-- 错误提示 -->
+                    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <span th:text="${error}">错误信息</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <h1 class="display-4 mb-4">欢迎使用图书管理系统</h1>
+                            
+                            <!-- 已登录用户显示 -->
+                            <div sec:authorize="isAuthenticated()">
+                                <p class="lead mb-4">当前用户：<span sec:authentication="name">admin</span></p>
+
+                                <!-- 管理员功能 -->
+                                <div class="row mt-4" sec:authorize="hasRole('ADMIN')">
+                                    <div class="col-md-6 mx-auto">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">系统管理</h5>
+                                                <div class="list-group">
+                                                    <a href="/admin/books" class="list-group-item list-group-item-action">
+                                                        <i class="bi bi-book me-2"></i>图书管理
+                                                    </a>
+                                                    <a href="/readers" class="list-group-item list-group-item-action">
+                                                        <i class="bi bi-people me-2"></i>读者管理
+                                                    </a>
+                                                    <a href="/borrowings" class="list-group-item list-group-item-action">
+                                                        <i class="bi bi-arrow-left-right me-2"></i>借阅管理
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 读者功能 -->
+                                <div class="row mt-4" sec:authorize="hasRole('READER')">
+                                    <div class="col-md-6 mx-auto">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">读者服务</h5>
+                                                <div class="list-group">
+                                                    <a href="/books" class="list-group-item list-group-item-action">
+                                                        <i class="bi bi-search me-2"></i>图书查借
+                                                    </a>
+                                                    <a href="/profile/borrowings" class="list-group-item list-group-item-action">
+                                                        <i class="bi bi-journal-text me-2"></i>我的借阅
+                                                    </a>
+                                                    <a href="/profile/return" class="list-group-item list-group-item-action">
+                                                        <i class="bi bi-arrow-return-left me-2"></i>归还图书
+                                                    </a>
+                                                    <a href="/profile/info" class="list-group-item list-group-item-action">
+                                                        <i class="bi bi-person me-2"></i>个人信息
+                                                    </a>
+                                                    <a href="/notifications" class="list-group-item list-group-item-action">
+                                                        <i class="bi bi-envelope me-2"></i>消息通知
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 未登录用户显示 -->
+                            <div sec:authorize="!isAuthenticated()">
+                                <p class="lead mb-4">请登录以使用系统功能</p>
+                                <div class="d-grid gap-2 col-6 mx-auto">
+                                    <a href="/login" class="btn btn-primary btn-lg">
+                                        <i class="bi bi-box-arrow-in-right me-2"></i>登录
+                                    </a>
+                                    <a href="/register" class="btn btn-outline-primary btn-lg">
+                                        <i class="bi bi-person-plus me-2"></i>注册
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/main :: html}">
+<head>
+    <title id="pageTitle">消息通知</title>
+    <style>
+        .notification-item {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        
+        .notification-item:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+        
+        .notification-item.unread {
+            border-left-color: #0d6efd;
+            background-color: rgba(13, 110, 253, 0.05);
+        }
+        
+        .notification-time {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+        
+        .notification-title {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        
+        .notification-content {
+            color: #666;
+        }
+        
+        .notification-badge {
+            font-size: 0.75rem;
+            padding: 0.25em 0.6em;
+        }
+    </style>
+</head>
+<body>
+    <div th:fragment="mainContent">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title mb-4">消息通知</h5>
+                            
+                            <div th:if="${notifications.empty}" class="alert alert-info">
+                                暂无通知消息
+                            </div>
+                            
+                            <div th:if="${!notifications.empty}" class="list-group">
+                                <div th:each="notification : ${notifications}" 
+                                     th:class="'list-group-item notification-item ' + (${!notification.read} ? 'unread' : '')">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 class="notification-title" th:text="${notification.title}">通知标题</h6>
+                                        <span class="notification-time" 
+                                              th:text="${#temporals.format(notification.createTime, 'yyyy-MM-dd HH:mm')}">
+                                            2024-01-01 12:00
+                                        </span>
+                                    </div>
+                                    <p class="notification-content mb-2" th:text="${notification.content}">
+                                        通知内容
+                                    </p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge notification-badge"
+                                              th:class="${'badge notification-badge ' + 
+                                                        (${notification.type == T(com.model.Notification.NotificationType).RETURN_REMINDER} ? 
+                                                        'bg-warning text-dark' : 'bg-info')}"
+                                              th:text="${notification.type == T(com.model.Notification.NotificationType).RETURN_REMINDER ? 
+                                                       '归还提醒' : '系统通知'}">
+                                            通知类型
+                                        </span>
+                                        <button th:if="${!notification.read}" 
+                                                class="btn btn-sm btn-outline-primary"
+                                                th:onclick="'markAsRead(' + ${notification.id} + ')'">
+                                            标记为已读
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页面特定的JavaScript -->
+    <th:block id="pageScripts">
+        <script>
+            function markAsRead(id) {
+                fetch('/notifications/' + id + '/read', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    }
+                });
+            }
+        </script>
+    </th:block>
+</body>
+</html> 

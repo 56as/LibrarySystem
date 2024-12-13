@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-17",
+            "path": "D:\\java_17"
+        }
+    ],
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-Application",
+            "request": "launch",
+            "mainClass": "com.Application",
+            "projectName": "demo",
+            "vmArgs": "-Dfile.encoding=UTF-8",
+            "env": {
+                "LANG": "zh_CN.UTF-8"
+            }
+        }
+    ]
+} 

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout/main :: html}">
+<head>
+    <meta charset="UTF-8">
+    <title id="pageTitle">管理控制台 - 图书管理系统</title>
+    <style>
+        .admin-dashboard {
+            background: #1a1c23;
+            border-radius: 20px;
+            padding: 2rem;
+            color: #e4e6eb;
+        }
+        
+        .admin-dashboard .card {
+            background: #2d3748;
+            border: 1px solid #4a5568;
+            color: #e4e6eb;
+        }
+        
+        .admin-dashboard .card-title {
+            color: #a0aec0;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .admin-dashboard .display-4 {
+            color: #fff;
+            font-weight: 600;
+        }
+        
+        .admin-dashboard .btn-primary {
+            background: #4299e1;
+            border: none;
+            color: white;
+        }
+        
+        .admin-dashboard .btn-primary:hover {
+            background: #3182ce;
+        }
+        
+        .admin-dashboard .list-group-item {
+            background: #2d3748;
+            border-color: #4a5568;
+            color: #e4e6eb;
+            transition: all 0.3s ease;
+        }
+        
+        .admin-dashboard .list-group-item:hover {
+            background: #4a5568;
+            transform: translateX(5px);
+        }
+        
+        .admin-dashboard .badge {
+            font-size: 0.75rem;
+            padding: 0.35em 0.65em;
+        }
+        
+        .stat-card {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                rgba(255,255,255,0.05) 0%,
+                rgba(255,255,255,0) 100%
+            );
+            transform: rotate(45deg);
+            pointer-events: none;
+        }
+        
+        .stat-icon {
+            font-size: 2rem;
+            opacity: 0.5;
+            position: absolute;
+            right: 1rem;
+            bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div th:fragment="mainContent">
+        <div class="container admin-dashboard">
+            <div class="row mb-4">
+                <div class="col">
+                    <h2 class="mb-1">管理控制台</h2>
+                    <p class="text-muted mb-0">欢迎回来，<span sec:authentication="name">管理员</span></p>
+                </div>
+            </div>
+
+            <!-- 统计卡片 -->
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card stat-card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">图书总数</h5>
+                            <p class="card-text display-4" th:text="${bookCount}">0</p>
+                            <i class="bi bi-book stat-icon"></i>
+                            <a href="/admin/books" class="btn btn-primary btn-sm">管理图书</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card stat-card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">读者总数</h5>
+                            <p class="card-text display-4" th:text="${readerCount}">0</p>
+                            <i class="bi bi-people stat-icon"></i>
+                            <a href="/readers" class="btn btn-primary btn-sm">管理读者</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card stat-card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">借阅总数</h5>
+                            <p class="card-text display-4" th:text="${borrowingCount}">0</p>
+                            <i class="bi bi-arrow-left-right stat-icon"></i>
+                            <a href="/borrowings" class="btn btn-primary btn-sm">管理借阅</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 快速操作和系统信息 -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-lightning-charge me-2"></i>快速操作
+                            </h5>
+                            <div class="list-group">
+                                <a href="/books/new" class="list-group-item list-group-item-action">
+                                    <i class="bi bi-plus-circle me-2"></i>添加新图书
+                                </a>
+                                <a href="/readers/new" class="list-group-item list-group-item-action">
+                                    <i class="bi bi-person-plus me-2"></i>添加新读者
+                                </a>
+                                <a href="/borrowings/new" class="list-group-item list-group-item-action">
+                                    <i class="bi bi-journal-plus me-2"></i>登记借阅
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-info-circle me-2"></i>系统信息
+                            </h5>
+                            <ul class="list-group">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span><i class="bi bi-tag me-2"></i>系统版本</span>
+                                    <span class="badge bg-info">1.0.0</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span><i class="bi bi-database me-2"></i>数据库状态</span>
+                                    <span class="badge bg-success">正常</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span><i class="bi bi-clock me-2"></i>最后更新</span>
+                                    <span th:text="${#dates.format(#dates.createNow(), 'yyyy-MM-dd HH:mm')}">2024-01-01</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

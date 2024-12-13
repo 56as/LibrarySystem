@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout/main :: html}">
+<head>
+    <title id="pageTitle">统计报表 - 图书管理系统</title>
+</head>
+<body>
+    <div th:fragment="mainContent">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col">
+                    <h2>统计报表</h2>
+                </div>
+            </div>
+
+            <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}">
+                错误信息
+            </div>
+
+            <!-- 基本统计数据 -->
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">总图书数</h5>
+                            <p class="card-text display-4" th:text="${totalBooks}">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">总读者数</h5>
+                            <p class="card-text display-4" th:text="${totalReaders}">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">总借阅数</h5>
+                            <p class="card-text display-4" th:text="${totalBorrowings}">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 活跃读者 -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">活跃读者</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>读者</th>
+                                            <th>借阅次数</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="reader : ${activeReaders}">
+                                            <td th:text="${reader.reader.name}">读者名</td>
+                                            <td th:text="${reader.borrowCount}">0</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">月度借阅统计</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>月份</th>
+                                            <th>借阅数量</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="stat : ${monthlyStats}">
+                                            <td th:text="${stat.key + '月'}">1月</td>
+                                            <td th:text="${stat.value}">0</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 逾期借阅 -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">逾期借阅</h5>
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>读者</th>
+                                            <th>图书</th>
+                                            <th>借阅日期</th>
+                                            <th>应还日期</th>
+                                            <th>逾期天数</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:if="${overdueBorrowings.empty}">
+                                            <td colspan="5" class="text-center">暂无逾期借阅</td>
+                                        </tr>
+                                        <tr th:each="borrowing : ${overdueBorrowings}">
+                                            <td th:text="${borrowing.reader.name}">读者名</td>
+                                            <td th:text="${borrowing.book.title}">图书名</td>
+                                            <td th:text="${#temporals.format(borrowing.borrowDate, 'yyyy-MM-dd')}">借阅日期</td>
+                                            <td th:text="${#temporals.format(borrowing.dueDate, 'yyyy-MM-dd')}">应还日期</td>
+                                            <td th:text="${T(java.time.temporal.ChronoUnit).DAYS.between(borrowing.dueDate, T(java.time.LocalDate).now())}">
+                                                逾期天数
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

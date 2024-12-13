@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/main :: html}">
+<head>
+    <title id="pageTitle">我的借阅 - 图书管理系统</title>
+</head>
+<body>
+    <div th:fragment="mainContent">
+        <div class="container">
+            <h2 class="mb-4">我的借阅</h2>
+
+            <!-- 当前借阅 -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">当前借阅</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>书名</th>
+                                    <th>借阅日期</th>
+                                    <th>应还日期</th>
+                                    <th>状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="borrowing : ${currentBorrowings}">
+                                    <td th:text="${borrowing.book.title}">书名</td>
+                                    <td th:text="${#temporals.format(borrowing.borrowDate, 'yyyy-MM-dd')}">借阅日期</td>
+                                    <td th:text="${#temporals.format(borrowing.dueDate, 'yyyy-MM-dd')}">应还日期</td>
+                                    <td>
+                                        <span class="badge bg-warning" th:if="${borrowing.status == 'BORROWED'}">借阅中</span>
+                                        <span class="badge bg-danger" th:if="${borrowing.status == 'OVERDUE'}">已逾期</span>
+                                    </td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(currentBorrowings)}">
+                                    <td colspan="4" class="text-center">暂无借阅记录</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 借阅历史 -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">借阅历史</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>书名</th>
+                                    <th>借阅日期</th>
+                                    <th>归还日期</th>
+                                    <th>状态</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="borrowing : ${borrowingHistory}">
+                                    <td th:text="${borrowing.book.title}">书名</td>
+                                    <td th:text="${#temporals.format(borrowing.borrowDate, 'yyyy-MM-dd')}">借阅日期</td>
+                                    <td th:text="${borrowing.returnDate != null ? #temporals.format(borrowing.returnDate, 'yyyy-MM-dd') : '-'}">归还日期</td>
+                                    <td>
+                                        <span class="badge bg-success" th:if="${borrowing.status == 'RETURNED'}">已归还</span>
+                                        <span class="badge bg-danger" th:if="${borrowing.status == 'OVERDUE_RETURNED'}">逾期归还</span>
+                                    </td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(borrowingHistory)}">
+                                    <td colspan="4" class="text-center">暂无历史记录</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
