@@ -21,5 +21,3 @@
 查看版本号
 `git log --oneline`<br>
 
-### 分支<br>
-Browser,Server,Mysql三个分支<br>
