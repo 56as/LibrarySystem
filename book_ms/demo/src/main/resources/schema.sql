@@ -2,19 +2,22 @@ SET NAMES utf8mb4;
 SET CHARACTER SET utf8mb4;
 
 -- 创建数据库
-CREATE DATABASE IF NOT EXISTS library_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+DROP DATABASE IF EXISTS library_db;
+CREATE DATABASE library_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE library_db;
 
 -- 禁用外键约束检查
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- 按正确顺序删除表
+DROP TABLE IF EXISTS notifications;
 DROP TABLE IF EXISTS borrowings;
 DROP TABLE IF EXISTS readers;
 DROP TABLE IF EXISTS admins;
 DROP TABLE IF EXISTS books;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS system_settings;
+DROP TABLE IF EXISTS announcements;
 
 -- 启用外键约束检查
 SET FOREIGN_KEY_CHECKS = 1;
@@ -36,7 +39,7 @@ CREATE TABLE readers (
     user_id BIGINT NOT NULL,
     name VARCHAR(100) NOT NULL,
     phone VARCHAR(20),
-    address TEXT,
+    address VARCHAR(100),
     membership_status VARCHAR(20) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -59,7 +62,7 @@ CREATE TABLE books (
     publisher VARCHAR(100),
     publish_date DATE,
     category VARCHAR(50),
-    location VARCHAR(50),
+    location VARCHAR(50) NULL,
     total_copies INT NOT NULL DEFAULT 1,
     available_copies INT NOT NULL DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -89,4 +92,26 @@ CREATE TABLE system_settings (
     setting_value VARCHAR(255),
     description VARCHAR(255),
     version BIGINT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 公告表
+CREATE TABLE announcements (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    admin_id BIGINT,
+    FOREIGN KEY (admin_id) REFERENCES admins(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- 通知表
+CREATE TABLE notifications (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    reader_id BIGINT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    is_read BOOLEAN NOT NULL DEFAULT FALSE,
+    type VARCHAR(50) NOT NULL,
+    FOREIGN KEY (reader_id) REFERENCES readers(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; 

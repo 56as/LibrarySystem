@@ -17,7 +17,7 @@ WHERE role = 'ADMIN';
 
 -- 创建对应的读者记录
 INSERT INTO readers (user_id, name, phone, address, membership_status)
-SELECT id, username, '12345678901', '测试地址', 'ACTIVE'
+SELECT id, username, '12345678901', 'HNU', 'ACTIVE'
 FROM users
 WHERE role = 'READER';
 

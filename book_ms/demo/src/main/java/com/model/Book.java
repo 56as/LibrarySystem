@@ -3,12 +3,15 @@ package com.model;
 import javax.persistence.*;
 import lombok.Data;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @Entity
 @Table(name = "books")
 public class Book {
     @Id
+    @Column(name = "isbn")
     private String isbn;
 
     @Column(nullable = false)
@@ -19,6 +22,7 @@ public class Book {
 
     private String publisher;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "publish_date")
     private LocalDate publishDate;
 
@@ -27,28 +31,31 @@ public class Book {
     private String location;
 
     @Column(name = "total_copies")
-    private Integer totalCopies;
+    private Integer totalCopies = 1;
 
     @Column(name = "available_copies")
-    private Integer availableCopies;
+    private Integer availableCopies = 1;
 
-    @Column(name = "stock")
-    private Integer stock;
-
-    @Column(name = "created_at")
-    private LocalDate createdAt;
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    private LocalDate updatedAt;
+    private LocalDateTime updatedAt;
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDate.now();
-        updatedAt = LocalDate.now();
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+        if (totalCopies == null) {
+            totalCopies = 1;
+        }
+        if (availableCopies == null) {
+            availableCopies = totalCopies;
+        }
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = LocalDate.now();
+        updatedAt = LocalDateTime.now();
     }
 }

@@ -42,6 +42,9 @@ public class NotificationController {
         Reader reader = readerService.findByUser(user)
             .orElseThrow(() -> new RuntimeException("Reader not found"));
 
+        // 检查是否有即将到期或已逾期的图书
+        notificationService.checkAndCreateOverdueNotifications(reader.getId());
+
         // 获取通知列表
         List<Notification> notifications = notificationService.getReaderNotifications(reader.getId());
         
@@ -61,6 +64,12 @@ public class NotificationController {
     public void sendSystemNotice(@RequestParam Long readerId,
                                @RequestParam String title,
                                @RequestParam String content) {
-        notificationService.createSystemMaintenanceNotice(readerId, title, content);
+        Notification notification = new Notification();
+        notification.setReader(readerService.findById(readerId)
+                .orElseThrow(() -> new RuntimeException("Reader not found")));
+        notification.setTitle(title);
+        notification.setContent(content);
+        notification.setType(Notification.NotificationType.ANNOUNCEMENT);
+        notificationService.createNotification(notification);
     }
 } 

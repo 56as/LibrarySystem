@@ -193,10 +193,20 @@ public class BookServiceImpl implements BookService {
     @Transactional
     public void deleteBook(String isbn) {
         try {
+            logger.info("Attempting to delete book with ISBN: {}", isbn);
+            
+            // Check if book exists before deletion
+            Optional<Book> book = bookRepository.findById(isbn);
+            if (!book.isPresent()) {
+                logger.warn("Book with ISBN {} not found", isbn);
+                throw new RuntimeException("图书不存在");
+            }
+            
             bookRepository.deleteById(isbn);
+            logger.info("Successfully deleted book with ISBN: {}", isbn);
         } catch (Exception e) {
             logger.error("Error deleting book with ISBN {}: ", isbn, e);
-            throw new RuntimeException("删除图书失败", e);
+            throw new RuntimeException("删除图书失败: " + e.getMessage(), e);
         }
     }
 
@@ -232,5 +242,11 @@ public class BookServiceImpl implements BookService {
             logger.error("Error finding books with filters - category: {}, publisher: {}: ", category, publisher, e);
             throw new RuntimeException("获取图书列表失败", e);
         }
+    }
+
+    @Override
+    @Transactional
+    public void deleteByIsbn(String isbn) {
+        deleteBook(isbn);
     }
 } 

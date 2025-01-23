@@ -3,7 +3,6 @@ package com.controller;
 import com.model.Borrowing;
 import com.model.Reader;
 import com.model.User;
-import com.service.BookService;
 import com.service.BorrowingService;
 import com.service.ReaderService;
 import com.service.UserService;
@@ -33,9 +32,6 @@ public class BorrowingController {
 
     @Autowired
     private ReaderService readerService;
-
-    @Autowired
-    private BookService bookService;
 
     @Autowired
     private UserService userService;

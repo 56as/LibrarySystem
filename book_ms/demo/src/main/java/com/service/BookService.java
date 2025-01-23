@@ -23,7 +23,10 @@ public interface BookService {
     List<Book> getBooksByPublisher(String publisher);
     Book updateBook(String isbn, Book bookDetails);
     void deleteBook(String isbn);
+    void deleteByIsbn(String isbn);
     Book addBook(Book book);
     Page<Book> findByPublisher(String publisher, Pageable pageable);
     Page<Book> findByFilters(String category, String publisher, Pageable pageable);
 }
+
+

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/readers")
+@RequestMapping(value = "/readers", produces = "text/html;charset=UTF-8")
 public class ReaderController {
 
     private static final Logger logger = LoggerFactory.getLogger(ReaderController.class);

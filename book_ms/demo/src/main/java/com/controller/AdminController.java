@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admins")
+@RequestMapping(value = "/admins", produces = "text/html;charset=UTF-8")
 public class AdminController {
 
     @Autowired

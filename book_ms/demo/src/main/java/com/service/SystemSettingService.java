@@ -22,4 +22,5 @@ public interface SystemSettingService {
     
     // 初始化默认设置
     void initializeDefaultSettings();
-} 
+}
+

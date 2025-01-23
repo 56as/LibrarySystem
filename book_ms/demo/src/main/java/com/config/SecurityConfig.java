@@ -10,9 +10,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     @Autowired
@@ -51,7 +53,9 @@ public class SecurityConfig {
                 .permitAll()
             .and()
             .csrf();
-        
+
+
+
         return http.build();
     }
 

@@ -15,4 +15,5 @@ public class WebConfig implements WebMvcConfigurer {
         filter.setForceEncoding(true);
         return filter;
     }
-} 
+}
+

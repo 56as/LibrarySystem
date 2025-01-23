@@ -22,4 +22,5 @@ public interface BorrowingService {
     List<Object[]> getMonthlyBorrowingStats();
     List<Borrowing> findAllCurrentBorrowings();
     void updateOverdueBorrowings();
-} 
+}
+

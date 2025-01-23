@@ -33,7 +33,7 @@ public class Notification {
 
     public enum NotificationType {
         RETURN_REMINDER,    // 图书归还通知
-        SYSTEM_MAINTENANCE  // 系统维护通知
+        ANNOUNCEMENT       // 公告通知
     }
 
     // Getters and Setters

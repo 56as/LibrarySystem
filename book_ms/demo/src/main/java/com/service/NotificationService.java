@@ -9,5 +9,9 @@ public interface NotificationService {
     long getUnreadCount(Long readerId);
     void markAsRead(Long notificationId);
     void createReturnReminder(Long readerId, String bookTitle);
-    void createSystemMaintenanceNotice(Long readerId, String title, String content);
-} 
+    List<Notification> getAllAnnouncements();
+    void createNotification(Notification notification);
+    void deleteNotification(Long id);
+    void checkAndCreateOverdueNotifications(Long readerId);
+}
+

@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        logger.info("开始验证用户登录: {}", username);
+        logger.debug("开始验证用户登录: {}", username);
         
         try {
             User user = userRepository.findByUsername(username)
@@ -31,11 +31,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                         return new UsernameNotFoundException("用户不存在: " + username);
                     });
             
-            logger.info("找到用户: {}, 角色: {}", username, user.getRole());
-            logger.info("用户详情 - ID: {}, 邮箱: {}, 密码: {}", user.getId(), user.getEmail(), user.getPassword());
+            logger.debug("找到用户: {}, 角色: {}", username, user.getRole());
             
-            SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + user.getRole().name());
-            logger.info("授予权限: {}", authority.getAuthority());
+            String roleWithPrefix = "ROLE_" + user.getRole().name();
+            SimpleGrantedAuthority authority = new SimpleGrantedAuthority(roleWithPrefix);
+            logger.debug("授予权限: {}", authority.getAuthority());
             
             UserDetails userDetails = new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
@@ -43,7 +43,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 Collections.singletonList(authority)
             );
             
-            logger.info("用户认证信息已创建 - 用户名: {}, 权限: {}", 
+            logger.debug("用户认证信息已创建 - 用户名: {}, 权限: {}", 
                        userDetails.getUsername(), userDetails.getAuthorities());
             
             return userDetails;

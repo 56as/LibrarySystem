@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout/main :: html}">
 <head>
+    <meta charset="UTF-8">
     <title id="pageTitle">消息通知</title>
     <style>
         .notification-item {
@@ -65,19 +66,10 @@
                                         通知内容
                                     </p>
                                     <div class="d-flex justify-content-between align-items-center">
-                                        <span class="badge notification-badge"
-                                              th:class="${'badge notification-badge ' + 
-                                                        (${notification.type == T(com.model.Notification.NotificationType).RETURN_REMINDER} ? 
-                                                        'bg-warning text-dark' : 'bg-info')}"
-                                              th:text="${notification.type == T(com.model.Notification.NotificationType).RETURN_REMINDER ? 
-                                                       '归还提醒' : '系统通知'}">
+                                        <span th:class="'badge notification-badge ' + (${notification.type.name() == 'RETURN_REMINDER'} ? 'bg-warning text-dark' : 'bg-info')"
+                                              th:text="${notification.type.name() == 'RETURN_REMINDER' ? '归还提醒' : '系统通知'}">
                                             通知类型
                                         </span>
-                                        <button th:if="${!notification.read}" 
-                                                class="btn btn-sm btn-outline-primary"
-                                                th:onclick="'markAsRead(' + ${notification.id} + ')'">
-                                            标记为已读
-                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -87,23 +79,5 @@
             </div>
         </div>
     </div>
-
-    <!-- 页面特定的JavaScript -->
-    <th:block id="pageScripts">
-        <script>
-            function markAsRead(id) {
-                fetch('/notifications/' + id + '/read', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }).then(response => {
-                    if (response.ok) {
-                        location.reload();
-                    }
-                });
-            }
-        </script>
-    </th:block>
 </body>
 </html> 

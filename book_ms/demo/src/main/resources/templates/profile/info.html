@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout/main :: html}">
 <head>
+    <meta charset="UTF-8">
     <title id="pageTitle">个人信息 - 图书管理系统</title>
     <style>
         .profile-container {
@@ -33,6 +34,10 @@
             padding: 2rem;
             border-radius: 15px 15px 0 0;
             margin-bottom: 2rem;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .profile-header h2 {
@@ -86,23 +91,21 @@
         }
 
         .edit-button {
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
-            padding: 0.5rem 1.5rem;
-            background: linear-gradient(135deg, #6B73FF 0%, #000DFF 100%);
+            background-color: rgba(255, 255, 255, 0.2);
             color: white;
-            border: none;
+            padding: 0.5rem 1rem;
             border-radius: 25px;
-            font-weight: 500;
-            transition: all 0.3s ease;
             text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.3s ease;
         }
 
         .edit-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 13, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.3);
             color: white;
+            text-decoration: none;
         }
 
         @media (max-width: 768px) {
@@ -132,7 +135,7 @@
                 </div>
                 
                 <div class="profile-card">
-                    <div class="profile-header position-relative">
+                    <div class="profile-header">
                         <h2>个人信息</h2>
                         <a href="/profile/edit" class="edit-button">
                             <i class="bi bi-pencil-square"></i> 编辑资料
@@ -191,20 +194,6 @@
                                 </div>
                                 <div class="col-md-9">
                                     <div class="info-value" th:text="${reader.address}">地址</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="info-row">
-                            <div class="row align-items-center">
-                                <div class="col-md-3">
-                                    <div class="info-label">会员状态</div>
-                                </div>
-                                <div class="col-md-9">
-                                    <span th:class="${'badge ' + (reader.membershipStatus == 'ACTIVE' ? 'bg-success' : 
-                                                           reader.membershipStatus == 'EXPIRED' ? 'bg-danger' : 'bg-warning')}"
-                                          th:text="${reader.membershipStatus == 'ACTIVE' ? '有效' : 
-                                                   reader.membershipStatus == 'EXPIRED' ? '过期' : '暂停'}">状态</span>
                                 </div>
                             </div>
                         </div>

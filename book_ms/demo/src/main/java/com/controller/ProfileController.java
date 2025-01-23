@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/profile")
+@RequestMapping(value = "/profile", produces = "text/html;charset=UTF-8")
 public class ProfileController {
     private static final Logger logger = LoggerFactory.getLogger(ProfileController.class);
 

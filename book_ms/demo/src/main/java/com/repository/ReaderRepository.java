@@ -15,7 +15,7 @@ public interface ReaderRepository extends JpaRepository<Reader, Long> {
     
     // 根据电话查找读者
     Optional<Reader> findByPhone(String phone);
-    
+
     // 根据会员状态查找读者
     List<Reader> findByMembershipStatus(Reader.MembershipStatus status);
     

@@ -4,6 +4,7 @@ import com.model.User;
 import com.repository.UserRepository;
 import com.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,5 +51,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteById(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Override
+    public void updatePassword(String username, String newPassword) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
 } 

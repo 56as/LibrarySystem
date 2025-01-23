@@ -7,14 +7,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.time.LocalDate;
+import java.nio.charset.StandardCharsets;
 
 @Controller
-@RequestMapping("/admin/books")
+@RequestMapping(value = "/books_management", produces = "text/html;charset=UTF-8")
 public class AdminBookController {
     private static final Logger logger = LoggerFactory.getLogger(AdminBookController.class);
     private static final int PAGE_SIZE = 10;
@@ -51,84 +52,72 @@ public class AdminBookController {
             model.addAttribute("totalPages", bookPage.getTotalPages());
             model.addAttribute("totalItems", bookPage.getTotalElements());
             model.addAttribute("keyword", keyword);
-            model.addAttribute("selectedCategory", category);
-            model.addAttribute("selectedPublisher", publisher);
+            model.addAttribute("category", category);
+            model.addAttribute("publisher", publisher);
 
-            if (bookPage.isEmpty()) {
-                model.addAttribute("info", "未找到符合条件���图书");
-            }
-
-            return "admin/books";
+            return "books_management/list";
         } catch (Exception e) {
             logger.error("Error showing books page: ", e);
             model.addAttribute("error", "获取图书列表失败: " + e.getMessage());
-            return "admin/books";
+            return "books_management/list";
         }
     }
 
-    @GetMapping("/api/{isbn}")
-    @ResponseBody
-    public ResponseEntity<?> getBook(@PathVariable String isbn) {
+    @PostMapping("/{isbn}/delete")
+    public String deleteBook(@PathVariable String isbn, RedirectAttributes redirectAttributes) {
         try {
-            logger.info("Getting book details for ISBN: {}", isbn);
-            return bookService.findByIsbn(isbn)
-                    .map(ResponseEntity::ok)
-                    .orElseGet(() -> {
-                        logger.warn("Book not found with ISBN: {}", isbn);
-                        return ResponseEntity.notFound().build();
-                    });
-        } catch (Exception e) {
-            logger.error("Error getting book details for ISBN {}: ", isbn, e);
-            return ResponseEntity.badRequest().body("获取图书详情失败: " + e.getMessage());
-        }
-    }
-
-    @PostMapping("/api")
-    @ResponseBody
-    @Transactional
-    public ResponseEntity<?> addBook(@RequestBody Book book) {
-        try {
-            logger.info("Adding new book with ISBN: {}", book.getIsbn());
-            
-            if (bookService.findByIsbn(book.getIsbn()).isPresent()) {
-                logger.warn("Book with ISBN {} already exists", book.getIsbn());
-                return ResponseEntity.badRequest().body("ISBN已存在");
-            }
-
-            book.setAvailableCopies(book.getTotalCopies());
-            Book savedBook = bookService.addBook(book);
-            logger.info("Successfully added book with ISBN: {}", savedBook.getIsbn());
-            return ResponseEntity.ok(savedBook);
-        } catch (Exception e) {
-            logger.error("Error adding book: ", e);
-            return ResponseEntity.badRequest().body("添加图书失败: " + e.getMessage());
-        }
-    }
-
-    @DeleteMapping("/api/{isbn}")
-    @ResponseBody
-    public ResponseEntity<?> deleteBook(@PathVariable String isbn) {
-        try {
-            bookService.deleteBook(isbn);
-            return ResponseEntity.ok().build();
+            bookService.deleteByIsbn(isbn);
+            redirectAttributes.addFlashAttribute("success", "图书删除成功");
         } catch (Exception e) {
             logger.error("Error deleting book: ", e);
-            return ResponseEntity.badRequest().body("删除图书失败: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "删除图书失败: " + e.getMessage());
         }
+        return "redirect:/books_management";
     }
 
-    @PutMapping("/api/{isbn}")
-    @ResponseBody
-    public ResponseEntity<?> updateBook(@PathVariable String isbn, @RequestBody Book book) {
+    @GetMapping("/add")
+    public String showAddForm(Model model) {
+        model.addAttribute("book", new Book());
+        return "books_management/add";
+    }
+
+    @PostMapping(value = "/add", produces = "text/html;charset=UTF-8")
+    public String addBook(@ModelAttribute Book book, RedirectAttributes redirectAttributes) {
         try {
-            if (!isbn.equals(book.getIsbn())) {
-                return ResponseEntity.badRequest().body("ISBN不匹配");
+            // 确保所有字符串字段使用UTF-8编码
+            if (book.getTitle() != null) {
+                book.setTitle(new String(book.getTitle().getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8));
             }
-            Book updatedBook = bookService.updateBook(isbn, book);
-            return ResponseEntity.ok(updatedBook);
+            if (book.getAuthor() != null) {
+                book.setAuthor(new String(book.getAuthor().getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8));
+            }
+            if (book.getPublisher() != null) {
+                book.setPublisher(new String(book.getPublisher().getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8));
+            }
+            if (book.getCategory() != null) {
+                book.setCategory(new String(book.getCategory().getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8));
+            }
+
+            if (bookService.findByIsbn(book.getIsbn()).isPresent()) {
+                redirectAttributes.addFlashAttribute("error", "ISBN已存在");
+                return "redirect:/books_management/add";
+            }
+
+            // 设置可借数量等于总数量
+            book.setAvailableCopies(book.getTotalCopies());
+            
+            // 如果出版日期为空，设置为当前日期
+            if (book.getPublishDate() == null) {
+                book.setPublishDate(LocalDate.now());
+            }
+
+            bookService.addBook(book);
+            redirectAttributes.addFlashAttribute("success", "添加图书成功");
+            return "redirect:/books_management";
         } catch (Exception e) {
-            logger.error("Error updating book: ", e);
-            return ResponseEntity.badRequest().body("更新图书失败: " + e.getMessage());
+            logger.error("Error adding book: ", e);
+            redirectAttributes.addFlashAttribute("error", "添加图书失败: " + e.getMessage());
+            return "redirect:/books_management/add";
         }
     }
 } 

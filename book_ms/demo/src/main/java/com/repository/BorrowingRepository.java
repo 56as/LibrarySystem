@@ -23,10 +23,10 @@ public interface BorrowingRepository extends JpaRepository<Borrowing, Long> {
            "ORDER BY borrowing_count DESC " +
            "LIMIT ?1", nativeQuery = true)
     List<Object[]> findMostActiveReaders(int limit);
-    
+
     @Query(value = "SELECT DATE_FORMAT(borrow_date, '%Y-%m') as month, COUNT(*) as count " +
            "FROM borrowings " +
            "GROUP BY month " +
            "ORDER BY month DESC", nativeQuery = true)
     List<Object[]> findMonthlyBorrowingStats();
-} 
+}

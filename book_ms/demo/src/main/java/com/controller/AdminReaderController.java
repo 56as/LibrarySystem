@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/admin/readers")
+@RequestMapping(value = "/admin/readers", produces = "text/html;charset=UTF-8")
 public class AdminReaderController {
     
     private static final Logger logger = LoggerFactory.getLogger(AdminReaderController.class);

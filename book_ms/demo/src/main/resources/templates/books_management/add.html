@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      th:replace="~{layout/main :: html}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title id="pageTitle">添加图书 - 图书管理系统</title>
+</head>
+<body>
+    <div th:fragment="mainContent">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title mb-4">添加新图书</h2>
+
+                            <!-- 提示信息 -->
+                            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <span th:text="${error}"></span>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+
+                            <form th:action="@{/books_management/add}" method="post" th:object="${book}" accept-charset="UTF-8">
+                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                
+                                <div class="mb-3">
+                                    <label for="isbn" class="form-label">ISBN</label>
+                                    <input type="text" class="form-control" id="isbn" th:field="*{isbn}" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="title" class="form-label">书名</label>
+                                    <input type="text" class="form-control" id="title" th:field="*{title}" required accept-charset="UTF-8">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="author" class="form-label">作者</label>
+                                    <input type="text" class="form-control" id="author" th:field="*{author}" required accept-charset="UTF-8">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="publisher" class="form-label">出版社</label>
+                                    <input type="text" class="form-control" id="publisher" th:field="*{publisher}" accept-charset="UTF-8">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="category" class="form-label">分类</label>
+                                    <select class="form-select" id="category" th:field="*{category}">
+                                        <option value="计算机">计算机</option>
+                                        <option value="文学">文学</option>
+                                        <option value="历史">历史</option>
+                                        <option value="科学">科学</option>
+                                        <option value="艺术">艺术</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="totalCopies" class="form-label">总册数</label>
+                                    <input type="number" class="form-control" id="totalCopies" th:field="*{totalCopies}" value="1" min="1" required>
+                                </div>
+
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary">添加图书</button>
+                                    <a href="/books_management" class="btn btn-secondary">返回列表</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

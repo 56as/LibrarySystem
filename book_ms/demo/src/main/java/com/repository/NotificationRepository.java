@@ -10,4 +10,7 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     List<Notification> findByReaderIdOrderByCreateTimeDesc(Long readerId);
     List<Notification> findByReaderIdAndIsReadOrderByCreateTimeDesc(Long readerId, boolean isRead);
     long countByReaderIdAndIsRead(Long readerId, boolean isRead);
-} 
+    List<Notification> findByTypeOrderByCreateTimeDesc(Notification.NotificationType type);
+    List<Notification> findByTitleAndType(String title, Notification.NotificationType type);
+}
+
